@@ -1,5 +1,5 @@
 {
-  "name": "Payroll and Tax Calculator",
+  "name": "Payroll and Tax Shelter",
   "description": "Comprehensive payroll and tax calculator for Indonesia under PP 58/2023 PMK 168/2023 with BPJS statutory compliance.",
   "requestFramePermissions": [],
   "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]

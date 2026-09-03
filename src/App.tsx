@@ -326,7 +326,7 @@ export default function App() {
   const tabs = [
     { id: 'dashboard', name: 'Dashboard & Reconciliation', icon: LayoutDashboard },
     { id: 'employees', name: 'Employee Master', icon: Users },
-    { id: 'salary', name: 'Salary Master', icon: DollarSign },
+    { id: 'salary', name: 'Master Penggajian', icon: DollarSign },
     { id: 'attendance', name: 'Attendance & Overtime (OT)', icon: Watch },
     { id: 'variables', name: 'Variable Payroll Input', icon: PlusCircle },
     { id: 'bpjs', name: 'BPJS Contributions', icon: ShieldCheck },
@@ -486,6 +486,8 @@ export default function App() {
               <SalaryMasterComponent
                 employees={employees}
                 salaryMaster={salaryMaster}
+                selectedMonth={selectedMonth}
+                onMonthChange={setSelectedMonth}
                 onUpdateSalary={handleUpdateSalary}
               />
             )}

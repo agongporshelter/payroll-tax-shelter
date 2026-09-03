@@ -5,16 +5,35 @@ import { Edit2, Check, X, Search, DollarSign, UserCheck } from 'lucide-react';
 interface SalaryMasterProps {
   employees: Employee[];
   salaryMaster: SalaryMaster[];
+  selectedMonth: number;
+  onMonthChange: (m: number) => void;
   onUpdateSalary: (sal: SalaryMaster) => void;
 }
 
 export default function SalaryMasterComponent({
   employees,
   salaryMaster,
+  selectedMonth,
+  onMonthChange,
   onUpdateSalary
 }: SalaryMasterProps) {
   
   const [searchTerm, setSearchTerm] = useState('');
+  
+  const monthsList = [
+    { num: 1, name: 'Januari' },
+    { num: 2, name: 'Februari' },
+    { num: 3, name: 'Maret' },
+    { num: 4, name: 'April (Periode THR & Bonus)' },
+    { num: 5, name: 'Mei' },
+    { num: 6, name: 'Juni' },
+    { num: 7, name: 'Juli' },
+    { num: 8, name: 'Agustus' },
+    { num: 9, name: 'September' },
+    { num: 10, name: 'Oktober' },
+    { num: 11, name: 'November' },
+    { num: 12, name: 'Desember (Rekonsiliasi PPh 21 Tahunan)' }
+  ];
   
   // Selected employee for the quick configuration card
   const [selectedEmpId, setSelectedEmpId] = useState<string>(employees[0]?.id || '');
@@ -179,18 +198,34 @@ export default function SalaryMasterComponent({
       </div>
 
       {/* Top action controls */}
-      <div className="flex flex-col sm:flex-row justify-between items-stretch sm:items-center gap-4 bg-white p-4 rounded-xl border border-slate-100 shadow-sm">
-        <div className="relative flex-1 max-w-xs">
-          <Search className="absolute left-3 top-2.5 w-4 h-4 text-slate-400" />
-          <input
-            type="text"
-            placeholder="Cari ID, nama, atau unit..."
-            value={searchTerm}
-            onChange={(e) => setSearchTerm(e.target.value)}
-            className="pl-9 pr-4 py-2 w-full text-xs font-semibold rounded-lg border border-slate-200 text-slate-800 focus:outline-indigo-600"
-          />
+      <div className="flex flex-col md:flex-row justify-between items-stretch md:items-center gap-4 bg-white p-4 rounded-xl border border-slate-100 shadow-sm">
+        <div className="flex flex-col sm:flex-row gap-3 flex-1 items-stretch sm:items-center">
+          <div className="relative flex-1 max-w-xs">
+            <Search className="absolute left-3 top-2.5 w-4 h-4 text-slate-400" />
+            <input
+              type="text"
+              placeholder="Cari ID, nama, atau unit..."
+              value={searchTerm}
+              onChange={(e) => setSearchTerm(e.target.value)}
+              className="pl-9 pr-4 py-2 w-full text-xs font-semibold rounded-lg border border-slate-200 text-slate-800 focus:outline-indigo-600"
+            />
+          </div>
+          
+          {/* Month Filter */}
+          <div className="flex items-center gap-2">
+            <span className="text-xs font-bold text-slate-500 whitespace-nowrap">Filter Bulan:</span>
+            <select
+              value={selectedMonth}
+              onChange={(e) => onMonthChange(parseInt(e.target.value))}
+              className="text-xs font-bold bg-slate-50 text-slate-800 rounded-lg border border-slate-200 px-3 py-2 focus:outline-indigo-600 transition-colors cursor-pointer"
+            >
+              {monthsList.map(m => (
+                <option key={m.num} value={m.num}>{m.name}</option>
+              ))}
+            </select>
+          </div>
         </div>
-        <p className="text-xs text-slate-500 font-semibold italic">
+        <p className="text-xs text-slate-500 font-semibold italic md:max-w-md">
           *Gaji Pokok & Tunjangan Tetap digunakan sebagai dasar upah utama untuk batas iuran BPJS dan perhitungan upah lembur sesuai regulasi.
         </p>
       </div>
@@ -204,6 +239,7 @@ export default function SalaryMasterComponent({
                 <th className="py-3 px-4 break-words whitespace-normal">ID Karyawan</th>
                 <th className="py-3 px-3 break-words whitespace-normal">Nama Karyawan</th>
                 <th className="py-3 px-3 break-words whitespace-normal">Alokasi Klien Mitra</th>
+                <th className="py-3 px-3 text-center break-words whitespace-normal">Bulan</th>
                 <th className="py-3 px-3 text-right break-words whitespace-normal">Gaji Pokok</th>
                 <th className="py-3 px-3 text-right break-words whitespace-normal">Tunjangan Tetap</th>
                 <th className="py-3 px-3 text-right text-indigo-700 break-words whitespace-normal">Dasar BPJS (GP + T. Tetap)</th>
@@ -233,6 +269,11 @@ export default function SalaryMasterComponent({
                     </td>
                     <td className="py-3.5 px-3 break-words whitespace-normal">
                       <span className="text-slate-500 block">{emp.clientName}</span>
+                    </td>
+                    <td className="py-3.5 px-3 text-center break-words whitespace-normal">
+                      <span className="px-2 py-0.5 bg-blue-50 text-blue-700 font-extrabold rounded-full text-[10px] inline-block font-sans">
+                        {monthsList.find(m => m.num === selectedMonth)?.name.split(' ')[0]}
+                      </span>
                     </td>
                     
                     {/* Basic Salary */}
