@@ -211,7 +211,7 @@ export default function AttendanceOTComponent({
             </thead>
             <tbody className="divide-y divide-slate-100 text-slate-700">
               {filteredEmployees.map((emp) => {
-                const sal = salaryMaster.find(s => s.employeeId === emp.id) || {
+                const sal = salaryMaster.find(s => s.employeeId === emp.id && s.month === selectedMonth) || salaryMaster.find(s => s.employeeId === emp.id) || {
                   employeeId: emp.id,
                   basicSalary: 0,
                   fixedAllowance: 0,

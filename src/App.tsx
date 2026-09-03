@@ -214,7 +214,12 @@ export default function App() {
   const handleUpdateSalary = async (newSalary: SalaryMaster) => {
     try {
       await saveSalaryCloud(newSalary);
-      setSalaryMaster(salaryMaster.map(s => s.employeeId === newSalary.employeeId ? newSalary : s));
+      const exists = salaryMaster.some(s => s.employeeId === newSalary.employeeId && s.month === newSalary.month);
+      if (exists) {
+        setSalaryMaster(salaryMaster.map(s => (s.employeeId === newSalary.employeeId && s.month === newSalary.month) ? newSalary : s));
+      } else {
+        setSalaryMaster([...salaryMaster, newSalary]);
+      }
     } catch (e) {
       console.error("Gagal memperbarui gaji di cloud:", e);
     }
@@ -519,6 +524,7 @@ export default function App() {
               <BPJSDetails
                 employees={employees}
                 salaryMaster={salaryMaster}
+                selectedMonth={selectedMonth}
                 bpjsConfig={bpjsConfig}
               />
             )}

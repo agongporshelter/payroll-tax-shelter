@@ -49,7 +49,7 @@ export default function PPh21Details({
     const emp = employees.find(e => e.id === empId);
     if (!emp) return null;
     
-    const sal = salaryMaster.find(s => s.employeeId === empId) || { employeeId: empId, basicSalary: 0, fixedAllowance: 0, variableAllowance: 0 };
+    const sal = salaryMaster.find(s => s.employeeId === empId && s.month === month) || salaryMaster.find(s => s.employeeId === empId) || { employeeId: empId, basicSalary: 0, fixedAllowance: 0, variableAllowance: 0 };
     const att = attendanceOT.find(a => a.employeeId === empId && a.month === month) || { employeeId: empId, month, actualWorkDays: 22, unpaidLeaveDays: 0, otHours: 0 };
     const v = variables.find(varItem => varItem.employeeId === empId && varItem.month === month) || { employeeId: empId, month, bonus: 0, incentive: 0, loanDeduction: 0, otherDeduction: 0, customValues: {} };
     
@@ -80,7 +80,7 @@ export default function PPh21Details({
 
   const history = get12MonthHistory(selectedEmpId);
   const annualRecon = selectedEmp 
-    ? calculateAnnualReconciliation(selectedEmp, salaryMaster.find(s => s.employeeId === selectedEmpId)!, history, taxParams.ptkpRates)
+    ? calculateAnnualReconciliation(selectedEmp, salaryMaster.find(s => s.employeeId === selectedEmpId && s.month === 12) || salaryMaster.find(s => s.employeeId === selectedEmpId)!, history, taxParams.ptkpRates)
     : null;
 
   const terCategory = selectedEmp ? getTERCategory(selectedEmp.ptkpStatus) : 'A';

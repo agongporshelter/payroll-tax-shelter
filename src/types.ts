@@ -15,6 +15,7 @@ export interface Employee {
 
 export interface SalaryMaster {
   employeeId: string;
+  month?: number; // Optional month for month-specific salary master values
   basicSalary: number;
   fixedAllowance: number;
   variableAllowance: number;

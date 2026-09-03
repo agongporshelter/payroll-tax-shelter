@@ -41,10 +41,10 @@ export default function SalaryMasterComponent({
   const [cardFixed, setCardFixed] = useState<number>(0);
   const [cardVariable, setCardVariable] = useState<number>(0);
 
-  // Sync card inputs when selected employee changes
+  // Sync card inputs when selected employee changes or selected month changes
   useEffect(() => {
     if (selectedEmpId) {
-      const salObj = salaryMaster.find(s => s.employeeId === selectedEmpId);
+      const salObj = salaryMaster.find(s => s.employeeId === selectedEmpId && s.month === selectedMonth) || salaryMaster.find(s => s.employeeId === selectedEmpId);
       if (salObj) {
         setCardBasic(salObj.basicSalary);
         setCardFixed(salObj.fixedAllowance);
@@ -55,7 +55,7 @@ export default function SalaryMasterComponent({
         setCardVariable(0);
       }
     }
-  }, [selectedEmpId, salaryMaster]);
+  }, [selectedEmpId, salaryMaster, selectedMonth]);
 
   // Set default employee if selectedEmpId is empty but employees are available
   useEffect(() => {
@@ -88,6 +88,7 @@ export default function SalaryMasterComponent({
   const handleSaveEdit = (empId: string) => {
     onUpdateSalary({
       employeeId: empId,
+      month: selectedMonth,
       basicSalary: basicEdit,
       fixedAllowance: fixedEdit,
       variableAllowance: variableEdit
@@ -104,6 +105,7 @@ export default function SalaryMasterComponent({
     if (!selectedEmpId) return;
     onUpdateSalary({
       employeeId: selectedEmpId,
+      month: selectedMonth,
       basicSalary: cardBasic,
       fixedAllowance: cardFixed,
       variableAllowance: cardVariable
@@ -249,8 +251,9 @@ export default function SalaryMasterComponent({
             </thead>
             <tbody className="divide-y divide-slate-100 text-slate-700">
               {filteredEmployees.map((emp) => {
-                const sal = salaryMaster.find(s => s.employeeId === emp.id) || {
+                const sal = salaryMaster.find(s => s.employeeId === emp.id && s.month === selectedMonth) || salaryMaster.find(s => s.employeeId === emp.id) || {
                   employeeId: emp.id,
+                  month: selectedMonth,
                   basicSalary: 0,
                   fixedAllowance: 0,
                   variableAllowance: 0

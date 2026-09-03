@@ -33,7 +33,7 @@ export default function PayslipView({
   };
 
   const selectedEmp = employees.find(e => e.id === selectedId);
-  const sal = salaryMaster.find(s => s.employeeId === selectedId) || { employeeId: selectedId, basicSalary: 0, fixedAllowance: 0, variableAllowance: 0 };
+  const sal = salaryMaster.find(s => s.employeeId === selectedId && s.month === selectedMonth) || salaryMaster.find(s => s.employeeId === selectedId) || { employeeId: selectedId, basicSalary: 0, fixedAllowance: 0, variableAllowance: 0 };
   const att = attendanceOT.find(a => a.employeeId === selectedId && a.month === selectedMonth) || { employeeId: selectedId, month: selectedMonth, actualWorkDays: 22, unpaidLeaveDays: 0, otHours: 0 };
   const v = variables.find(item => item.employeeId === selectedId && item.month === selectedMonth) || { employeeId: selectedId, month: selectedMonth, bonus: 0, incentive: 0, loanDeduction: 0, otherDeduction: 0, customValues: {} };
 

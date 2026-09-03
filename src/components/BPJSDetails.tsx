@@ -6,12 +6,14 @@ import { Shield, Info, CheckCircle2, AlertTriangle, Search } from 'lucide-react'
 interface BPJSDetailsProps {
   employees: Employee[];
   salaryMaster: SalaryMaster[];
+  selectedMonth: number;
   bpjsConfig: BPJSConfig;
 }
 
 export default function BPJSDetails({
   employees,
   salaryMaster,
+  selectedMonth,
   bpjsConfig
 }: BPJSDetailsProps) {
   
@@ -45,7 +47,7 @@ export default function BPJSDetails({
   let grandTotalEmployee = 0;
 
   const rowCalculations = filteredEmployees.map(emp => {
-    const sal = salaryMaster.find(s => s.employeeId === emp.id) || { employeeId: emp.id, basicSalary: 0, fixedAllowance: 0, variableAllowance: 0 };
+    const sal = salaryMaster.find(s => s.employeeId === emp.id && s.month === selectedMonth) || salaryMaster.find(s => s.employeeId === emp.id) || { employeeId: emp.id, basicSalary: 0, fixedAllowance: 0, variableAllowance: 0 };
     const bpjsBasis = sal.basicSalary + sal.fixedAllowance;
     const jkkRate = getJKKRate(emp.jkkRiskClass);
     

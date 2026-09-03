@@ -42,7 +42,7 @@ export default function PayrollWorkbook({
   });
 
   const payrollRows = filteredEmployees.map(emp => {
-    const sal = salaryMaster.find(s => s.employeeId === emp.id) || { employeeId: emp.id, basicSalary: 0, fixedAllowance: 0, variableAllowance: 0 };
+    const sal = salaryMaster.find(s => s.employeeId === emp.id && s.month === selectedMonth) || salaryMaster.find(s => s.employeeId === emp.id) || { employeeId: emp.id, basicSalary: 0, fixedAllowance: 0, variableAllowance: 0 };
     const att = attendanceOT.find(a => a.employeeId === emp.id && a.month === selectedMonth) || { employeeId: emp.id, month: selectedMonth, actualWorkDays: 22, unpaidLeaveDays: 0, otHours: 0 };
     const v = variables.find(item => item.employeeId === emp.id && item.month === selectedMonth) || { employeeId: emp.id, month: selectedMonth, bonus: 0, incentive: 0, loanDeduction: 0, otherDeduction: 0, customValues: {} };
     

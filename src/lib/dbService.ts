@@ -213,10 +213,11 @@ export async function deleteEmployeeCloud(id: string) {
   try {
     // Delete employee
     await deleteDoc(doc(db, EMP_COL, id));
-    // Delete salary
+    // Delete generic/fallback salary
     await deleteDoc(doc(db, SAL_COL, id));
 
     for (let m = 1; m <= 12; m++) {
+      await deleteDoc(doc(db, SAL_COL, `${id}_${m}`));
       await deleteDoc(doc(db, ATT_COL, `${id}_${m}`));
       await deleteDoc(doc(db, VAR_COL, `${id}_${m}`));
     }
@@ -227,10 +228,11 @@ export async function deleteEmployeeCloud(id: string) {
 
 // Save/Update Salary
 export async function saveSalaryCloud(sal: SalaryMaster) {
+  const docId = sal.month ? `${sal.employeeId}_${sal.month}` : sal.employeeId;
   try {
-    await setDoc(doc(db, SAL_COL, sal.employeeId), sal);
+    await setDoc(doc(db, SAL_COL, docId), sal);
   } catch (e) {
-    handleFirestoreError(e, OperationType.WRITE, `${SAL_COL}/${sal.employeeId}`);
+    handleFirestoreError(e, OperationType.WRITE, `${SAL_COL}/${docId}`);
   }
 }
 
